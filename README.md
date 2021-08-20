@@ -9,6 +9,7 @@ I have used firebase auth for user authentication.
 ## Demo Video 
 
 
-https://user-images.githubusercontent.com/64964820/130189092-95691f98-549f-4df6-8a40-fa470098ecec.mp4
+https://user-images.githubusercontent.com/64964820/130193806-eb42b72b-ac7d-401c-9d61-2e34686c16f3.mp4
+
 
 
