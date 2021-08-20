@@ -29,7 +29,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 150.0,
+              height: 140.0,
               child: Image.network(
                 widget.product['img_path'],
                 fit: BoxFit.cover,
@@ -94,6 +94,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     'img_path': widget.product['img_path'],
                     'desc': widget.product['desc'],
                     'ratings': widget.product['ratings'],
+                    'quantity': quantity,
                   };
                   FirebaseFirestore.instance
                       .collection('users')

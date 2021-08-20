@@ -58,14 +58,16 @@ class _CartPageState extends State<CartPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  height: 140.0,
+                                  height: 120.0,
                                   child: Image.network(
                                     docs[index]['img_path'],
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                                 Text('${docs[index]['pname']}'),
-                                Text('₹ ${docs[index]['price']} /-'),
+                                Text('Quantity : ${docs[index]['quantity']}'),
+                                Text(
+                                    'Total price : ₹ ${docs[index]['price']} /-'),
                               ],
                             ),
                           ),
