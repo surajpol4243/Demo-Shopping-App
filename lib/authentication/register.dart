@@ -172,7 +172,7 @@ class _RegisterpageState extends State<Registerpage> {
                   onPressed: () async {
                     if (key.currentState!.validate()) {
                       print('Validated');
-                      Firebase.initializeApp();
+                      // Firebase.initializeApp();
                       showDialog(
                           context: context,
                           builder: (bc) {
@@ -186,42 +186,42 @@ class _RegisterpageState extends State<Registerpage> {
                               ),
                             );
                           });
-                      Firebase.initializeApp();
-
-                      try {
-                        UserCredential userCredential = await FirebaseAuth
-                            .instance
-                            .createUserWithEmailAndPassword(
-                                email: "${emailController!.text}",
-                                password: "${passwordController!.text}")
-                            .then((value) async {
-                          FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(value.user!.uid)
-                              .set({
-                            'name': nameController!.text,
-                            'email': emailController!.text,
-                            'phone': numberController!.text,
-                          }).then((d) {
-                            Navigator.pop(context);
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => ProductsPage(
-                                          user: value.user!.uid,
-                                        )),
-                                (route) => false);
+                      Firebase.initializeApp().then((v) async {
+                        try {
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
+                              .createUserWithEmailAndPassword(
+                                  email: "${emailController!.text}",
+                                  password: "${passwordController!.text}")
+                              .then((value) async {
+                            FirebaseFirestore.instance
+                                .collection("users")
+                                .doc(value.user!.uid)
+                                .set({
+                              'name': nameController!.text,
+                              'email': emailController!.text,
+                              'phone': numberController!.text,
+                            }).then((d) {
+                              Navigator.pop(context);
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => ProductsPage(
+                                            user: value.user!.uid,
+                                          )),
+                                  (route) => false);
+                            });
+                            return value;
                           });
-                          return value;
-                        });
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'weak-password') {
-                          print('The password provided is too weak.');
-                        } else if (e.code == 'email-already-in-use') {
-                          print('The account already exists for that email.');
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'weak-password') {
+                            print('The password provided is too weak.');
+                          } else if (e.code == 'email-already-in-use') {
+                            print('The account already exists for that email.');
+                          }
+                        } catch (e) {
+                          print(e);
                         }
-                      } catch (e) {
-                        print(e);
-                      }
+                      });
                     }
                   },
                   child: Text(

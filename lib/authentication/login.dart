@@ -93,43 +93,45 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   if (key.currentState!.validate()) {
                     print('validated');
-                    Firebase.initializeApp();
-                    showDialog(
-                        context: context,
-                        builder: (bc) {
-                          return AlertDialog(
-                            title: Text('Signing in...'),
-                            content: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CircularProgressIndicator(),
-                              ],
-                            ),
-                          );
+                    Firebase.initializeApp().then((v) async {
+                      showDialog(
+                          context: context,
+                          builder: (bc) {
+                            return AlertDialog(
+                              title: Text('Signing in...'),
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircularProgressIndicator(),
+                                ],
+                              ),
+                            );
+                          });
+
+                      try {
+                        UserCredential userCredential = await FirebaseAuth
+                            .instance
+                            .signInWithEmailAndPassword(
+                                email: emailcontroller!.text,
+                                password: passwordcontroller!.text)
+                            .then((value) {
+                          Navigator.pop(context);
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => ProductsPage(
+                                        user: value.user!.uid,
+                                      )),
+                              (route) => false);
+                          return value;
                         });
-                    try {
-                      UserCredential userCredential = await FirebaseAuth
-                          .instance
-                          .signInWithEmailAndPassword(
-                              email: emailcontroller!.text,
-                              password: passwordcontroller!.text)
-                          .then((value) {
-                        Navigator.pop(context);
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => ProductsPage(
-                                      user: value.user!.uid,
-                                    )),
-                            (route) => false);
-                        return value;
-                      });
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        print('No user found for that email.');
-                      } else if (e.code == 'wrong-password') {
-                        print('Wrong password provided for that user.');
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          print('No user found for that email.');
+                        } else if (e.code == 'wrong-password') {
+                          print('Wrong password provided for that user.');
+                        }
                       }
-                    }
+                    });
                   }
                 },
                 child: Text(
