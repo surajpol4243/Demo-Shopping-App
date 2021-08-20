@@ -1,6 +1,10 @@
 # Demo Shopping App
 
-A simple shopping app developed for Placement task for Logictrix Infotech. I have also linked Firebase Cloud Firestore in the app to store user data and cart details. I have used firebase auth for user athentication.
+A simple shopping app developed for Placement task for Logictrix Infotech. 
+
+I have also linked Firebase Cloud Firestore in the app to store user data and cart details. 
+
+I have used firebase auth for user authentication.
 
 ## Demo Video 
 
