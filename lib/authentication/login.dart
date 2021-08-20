@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/authentication/register.dart';
 import 'package:untitled/products/homepage.dart';
@@ -92,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   if (key.currentState!.validate()) {
                     print('validated');
-                    // Firebase.initializeApp();
+                    Firebase.initializeApp();
                     showDialog(
                         context: context,
                         builder: (bc) {

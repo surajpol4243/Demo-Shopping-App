@@ -16,6 +16,7 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  int quantity = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +38,33 @@ class _ProductDetailsState extends State<ProductDetails> {
             Text('${widget.product['pname']}'),
             Text('₹ ${widget.product['price']} /-'),
             Text('${widget.product['ratings']} '),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      quantity++;
+                    });
+                  },
+                  icon: Icon(Icons.add),
+                  color: Colors.blue,
+                ),
+                Text('${(quantity < 0) ? 1 : quantity}'),
+                IconButton(
+                  onPressed: () {
+                    if (quantity <= 1) {
+                      return;
+                    }
+                    setState(() {
+                      quantity--;
+                    });
+                  },
+                  icon: Icon(Icons.remove),
+                  color: Colors.blue,
+                ),
+              ],
+            ),
             MaterialButton(
               onPressed: () {
                 if (widget.userid.compareTo("null") == 0) {
@@ -58,11 +86,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                         );
                       });
+
+                  var temp = {
+                    'pid': widget.product['pid'],
+                    'pname': widget.product['pname'],
+                    'price': widget.product['price'] * quantity,
+                    'img_path': widget.product['img_path'],
+                    'desc': widget.product['desc'],
+                    'ratings': widget.product['ratings'],
+                  };
                   FirebaseFirestore.instance
                       .collection('users')
                       .doc(widget.userid)
                       .collection('cart')
-                      .add(widget.product)
+                      .add(temp)
                       .then((value) {
                     Fluttertoast.showToast(msg: 'Added to cart');
                     Navigator.pop(context);
